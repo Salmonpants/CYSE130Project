@@ -1,3 +1,6 @@
+#create inventory
+inventory = []
+
 #print a starting plot
 print("Star date 74219.6\nThe stars hang silent beyond the viewport of the USS Smenterprise, their" \
 "light stretched thin across the cold expanse of the Neutral Zone. For nearly a century, the Federation" \
@@ -17,7 +20,29 @@ if consult_smock == "y":
 #enter or do not enter neutral zone
 enter_neutral_zone = str(input("Do you want to enter the Neutral Zone? (y/n): "))
 if enter_neutral_zone == "y":
-    pass
+    print("You gained an apple")
+    inventory.append("Apple")
+    
+    take_coin = str(input("Walking down the hallway you see a coin. Do you want to pick it up? (y/n)"))
+    if take_coin == "y":
+        inventory.append("Coin")
+    
+    print("You have entered the Neutral Zone")
+    print("There appears to be 2 ships asking for help. The first one is a colony ship." \
+    "The second one appears to be disabled and adrift with a warp core breach getting worse by the second")
+
+    select_ship = str(input("Would you like to enter the colony ship or the disabled ship? (c/d)"))
+    if select_ship == "c":
+        pass
+    
+    elif select_ship == "d":
+        pass
+
+elif enter_neutral_zone == "n":
+    print("Game over: The phage overtakes another Vidiian colony")
+
+else:
+    print("error")
 
 #general loop
 #print situation
