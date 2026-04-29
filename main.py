@@ -1,3 +1,4 @@
+import random
 #create inventory
 inventory = []
 
@@ -31,10 +32,27 @@ if enter_neutral_zone == "y":
     print("There appears to be 2 ships asking for help. The first one is a colony ship." \
     "The second one appears to be disabled and adrift with a warp core breach getting worse by the second")
 
-    select_ship = str(input("Would you like to enter the colony ship or the disabled ship? (c/d)"))
+    select_ship = str(input("Would you like to enter the colony ship or the disabled ship? (c/d): "))
     if select_ship == "c":
-        pass
-    
+        print("You come across a massive generational ship which looks like it has been in space for a" \
+        "considerable amount of time. It seems as though it is in disrepair with extremely low energy readings.")
+
+        communicate_or_teleport = str(input("Would you like to attempt to communicate or teleport aboard? (c/t): "))
+        while communicate_or_teleport != "t":
+            
+                luck = random.randrange(2)
+
+                if inventory.count("Schematic") == 0:
+                    if luck == 1:
+                        print("A scan provides a schematic of the ship")
+                        inventory.append("Schematic")
+                else:
+                    print("You receive no response")
+                
+                communicate_or_teleport = str(input("Would you like to attempt to communicate or teleport aboard? (c/t)"))
+                
+            
+
     elif select_ship == "d":
         pass
 
