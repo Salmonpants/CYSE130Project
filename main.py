@@ -37,6 +37,33 @@ if enter_neutral_zone == "y":
         print("You come across a massive generational ship which looks like it has been in space for a" \
         "considerable amount of time. It seems as though it is in disrepair with extremely low energy readings.")
 
+    elif select_ship == "d":
+        investigate = input("After boarding the disabled ship, you hear whimpering. Do you investigate, or stay on the track? (y/n)")
+        if investigate == "y":
+            print("The lost targ has been acquired")
+            inventory.append("Targ")
+            ship_stabilized = True
+        elif investigate == "n":
+            print("You try to stabilize the ship")
+            if random.random() < 0.5:
+                ship_stabilized = False
+            elif random.random() >= 0.5:
+                ship_stabilizied = True
+    if ship_stabilized == False:
+        print("The Klingon ship and the crew sent to stabilize blow up.")
+        print("You and what is left of the crew head back to the star base.")
+    elif ship_stabilized == True:
+        print("You have successfully stabilized the ship!")
+        print("While on the ship, you discover an ambush plot, and the Klingon captain is not in a good mood.")
+        if "Targ" in inventory:
+            give_targ = input("Would you like to give the lost targ that you acquired to the captain of the ship? If not, it will remain your pet. (y/n)") 
+            if give_targ == "y":
+                print("The captain is beaming with joy! He's ecstatic that you found his lost targ and apologizes to you for what he has done. " \
+                       "He even lets you go.")
+                inventory.remove("Targ")
+            elif give_targ == "n":
+                print("You choose to keep the targ as your pet.")
+
         communicate_or_teleport = str(input("Would you like to attempt to communicate or teleport aboard? (c/t): "))
         while communicate_or_teleport != "t":
             
