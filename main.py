@@ -1,3 +1,4 @@
+import random
 #create inventory
 inventory = []
 
@@ -31,10 +32,63 @@ if enter_neutral_zone == "y":
     print("There appears to be 2 ships asking for help. The first one is a colony ship." \
     "The second one appears to be disabled and adrift with a warp core breach getting worse by the second")
 
-    select_ship = str(input("Would you like to enter the colony ship or the disabled ship? (c/d)"))
+    select_ship = str(input("Would you like to enter the colony ship or the disabled ship? (c/d): "))
     if select_ship == "c":
-        pass
-    
+        print("You come across a massive generational ship which looks like it has been in space for a" \
+        "considerable amount of time. It seems as though it is in disrepair with extremely low energy readings.")
+
+        communicate_or_teleport = str(input("Would you like to attempt to communicate or teleport aboard? (c/t): "))
+        while communicate_or_teleport != "t":
+            
+                luck = random.randrange(2)
+
+                if inventory.count("Schematic") == 0:
+                    if luck == 1:
+                        print("A scan provides a schematic of the ship")
+                        inventory.append("Schematic")
+                else:
+                    print("You receive no response")
+                
+                communicate_or_teleport = str(input("Would you like to attempt to communicate or teleport aboard? (c/t)"))
+        
+        print("You are greeted with a massive habitat like structure with an earth-like atmosphere and" \
+        "a day night cycle.")
+
+        look_or_scan = str(input("Would you like to look around or scan for life forms? (l/s): "))
+        while look_or_scan != "s":
+            print("Thousands of humanoid lifeforms are detected")
+            look_or_scan = str(input("Would you like to look around or scan for life forms? (l/s): "))
+        
+        print("There is a house nearby")
+        knock_or_ring = str(input("Would you like to knock on the door or ring the bell? (k/r): "))
+        print("Someone comes to the door and asks you what you need. He provides information and help." \
+        "You find out that these people do not realize that they are in space and that their ship is failing.")
+
+        print("Would you like to try to repair the ship without the denizens or educate them on how to repair" \
+        "it themselves? (r/e): ")
+        if (inventory.count("Schematic") == 1):
+            print("You show them the ship schematic. They realize they are on a failing ship. Going back" \
+            "to the Smenterprise you find that your replicator is on the frits and intermittently making" \
+            "things. You attempt to make parts for the ship.")
+            if (inventory.count("Coin") == 1):
+                if (random.randrange(0, 10) > 1):
+                    print("You successfully made the ship components. You greatly repair the ship to factory or" \
+                    "better conditions and complete the great repairs in record time. The people are greatful" \
+                    "and continue on their newly repaired mission. Victory")
+                else:
+                    print("The replicator was failed to produce a part and was damaged. You and the crew" \
+                    "proceed to scavange around their ship and get things to mostly working order. Victory.")
+            else:
+                if (random.randrange(0, 10) > 3):
+                    print("You successfully made the ship components. You greatly repair the ship to factory or" \
+                    "better conditions and complete the great repairs in record time. The people are greatful" \
+                    "and continue on their newly repaired mission. Victory")
+                else:
+                    print("The replicator was failed to produce a part and was damaged. You and the crew" \
+                    "proceed to scavange around their ship and get things to mostly working order. Victory.")
+        else:
+            pass
+
     elif select_ship == "d":
         pass
 
