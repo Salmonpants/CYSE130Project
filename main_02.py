@@ -548,7 +548,7 @@ def corridor_scene(state: dict) -> None:
 
 
 # ══════════════════════════════════════════════════════════════════
-# COLONY SHIP
+# Colony ship
 
 @safe_action
 def colony_ship_scene(state: dict) -> None:
@@ -648,7 +648,7 @@ def colony_ship_scene(state: dict) -> None:
 
 
 # ══════════════════════════════════════════════════════════════════
-# DISABLED SHIP
+# Disable Ship
 
 @safe_action
 def disabled_ship_scene(state: dict) -> None:
@@ -681,8 +681,7 @@ def disabled_ship_scene(state: dict) -> None:
 
 
 # ══════════════════════════════════════════════════════════════════
-#  MAIN MENU  (AMY's numbered menu — all 7 options fully functional)
-# ══════════════════════════════════════════════════════════════════
+# Main menu
 
 def _check_game_started(state: dict, option_name: str) -> bool:
     """Return False and print a warning if the player hasn't started a game yet."""
