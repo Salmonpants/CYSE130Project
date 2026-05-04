@@ -12,6 +12,8 @@ import os
 import sys
 import functools
 from contextlib import contextmanager
+from npcs import talk_to_npc
+NPC_KEYS = ["smock", "haru", "mira", "guard", "trader"]
 
 SAVE_FILE  = "savegame.json"
 AUDIT_LOG  = "audit_log.txt"
@@ -273,92 +275,6 @@ def show_inventory(state: dict) -> None:
 # ══════════════════════════════════════════════════════════════════
 #  NPC System 
 
-NPCS: dict = {
-    "smock": {
-        "where":    "bridge",
-        "role":     "advisor",
-        "dialogue": [
-            'Smock: "It is Smarfleet\'s policy to render aid to anyone in need."',
-            'Smock: "Check the terminal for access codes."'
-        ],
-        "gives": ["HintToken"]
-    },
-    "haru": {
-        "where":    "colony_house",
-        "role":     "engineer",
-        "dialogue": [
-            'Haru: "I can help repair systems if you bring me a schematic."',
-            'Haru: "With the schematic we can reprogram the replicator."'
-        ],
-        "gives": []
-    },
-    "mira": {
-        "where":    "disabled_ship",
-        "role":     "scientist",
-        "dialogue": [
-            'Mira: "My lab notes contain a code fragment. I will trade for a coin."',
-            'Mira: "Take this access code if you help me secure the core."'
-        ],
-        "gives": ["AccessCode"]
-    },
-    "guard": {
-        "where":    "loading_bay",
-        "role":     "gatekeeper",
-        "dialogue": [
-            'Guard: "You need a keycard to pass."',
-            'Guard: "If you can prove you\'re not a threat, I\'ll let you through."'
-        ],
-        "gives": []
-    },
-    "trader": {
-        "where":    "market",
-        "role":     "merchant",
-        "dialogue": [
-            'Trader: "I trade useful things for trinkets."',
-            'Trader: "Coins are valuable here."'
-        ],
-        "gives": ["MedPatch"]
-    }
-}
-
-NPC_KEYS = list(NPCS.keys())
-
-
-@safe_action
-def talk_to_npc(state: dict, npc_key: str) -> None:
-    npc = NPCS.get(npc_key)
-    if not npc:
-        print(f"  No one here by the name '{npc_key}'.")
-        return
-
-    print()
-    for line in npc["dialogue"]:
-        print(" ", line)
-
-    # Trade logic
-    if npc_key == "mira":
-        if "Coin" in state["inventory"]:
-            if get_input("\n  Trade your Coin for an AccessCode? (y/n): ", ["y", "n"]) == "y":
-                remove_item(state, "Coin")
-                add_item(state, "AccessCode")
-                log_event("NPC_TRADE", "NPC=Mira Coin->AccessCode", "SUCCESS")
-        else:
-            print("  You don't have a coin to trade.")
-
-    elif npc_key == "trader":
-        if "Coin" in state["inventory"]:
-            if get_input("\n  Trade your Coin for a MedPatch? (y/n): ", ["y", "n"]) == "y":
-                remove_item(state, "Coin")
-                add_item(state, "MedPatch")
-                log_event("NPC_TRADE", "NPC=Trader Coin->MedPatch", "SUCCESS")
-        else:
-            print('  Trader: "Come back with a coin."')
-
-    elif npc_key == "smock":
-        if "HintToken" not in state["inventory"]:
-            add_item(state, "HintToken")
-
-    save_game(state)
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -487,7 +403,7 @@ def start_bridge(state: dict) -> None:
     )
 
     if choice == "talk":
-        talk_to_npc(state, "smock")
+        talk_to_npc(state, "smock", add_item, remove_item, get_input, log_event)
         # Give player a chance to act after consulting Smock
         start_bridge(state)
 
@@ -595,10 +511,10 @@ def colony_ship_scene(state: dict) -> None:
         ["search", "engineer"]
     )
     if approach == "engineer":
-        talk_to_npc(state, "haru")
+        talk_to_npc(state, "haru", add_item, remove_item, get_input, log_event)
     else:
         print("  You find a house — someone answers the door. It's an engineer named Haru.")
-        talk_to_npc(state, "haru")
+        talk_to_npc(state, "haru", add_item, remove_item, get_input, log_event)
 
     print("\n  You discover these people have no idea they are in space — or that "
           "their ship is failing.")
@@ -655,7 +571,7 @@ def disabled_ship_scene(state: dict) -> None:
     print("\n  You board the disabled ship. The warp core breach pulses on your "
           "sensors like a countdown.")
 
-    talk_to_npc(state, "mira")
+    talk_to_npc(state, "mira", add_item, remove_item, get_input, log_event)
 
     if "AccessCode" in state["inventory"]:
         print("\n  Mira's access code fragment helps with the terminal.")
@@ -792,7 +708,7 @@ def main() -> None:
                 "  Who do you want to talk to? ",
                 NPC_KEYS          # validated against the actual NPC keys
             )
-            talk_to_npc(state, npc_name)
+            talk_to_npc(state, npc_name, add_item, remove_item, get_input, log_event)
 
         # ── 7. Quit ───────────────────────────────────────────────
         elif choice == 7:
