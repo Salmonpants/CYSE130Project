@@ -37,7 +37,7 @@ def print_intro(state: dict) -> None:
 
     save_game(state)
 
-
+# hello
 @safe_action
 def start_bridge(state: dict) -> None:
     state["location"] = "bridge"
