@@ -37,7 +37,9 @@ def print_intro(state: dict) -> None:
 
     save_game(state)
 
-# hello
+# --------------------------------------
+#  Bridge
+
 @safe_action
 def start_bridge(state: dict) -> None:
     state["location"] = "bridge"
@@ -63,21 +65,32 @@ def start_bridge(state: dict) -> None:
         print("\n  Console shows two contacts in the Neutral Zone:")
         print("    (c) Colony ship  — aged, very low power readings")
         print("    (d) Disabled ship — warp core breach, worsening fast")
+        print("    (i) Ignore - The situation there is unstable")
 
-        sel = get_input("  Which do you approach? (c/d): ", ["c", "d"])
+        sel = get_input("  Which do you approach? (c/d/i): ", ["c", "d","i"])
 
         if sel == "c":
             state["location"] = "colony_ship"
             state["scene_step"] = "colony_start"
             log_event("CHOICE_MADE", "Selected=ColonyShip")
             colony_ship_scene(state)
+            
+        elif choice == "i":
+            print("In the light of pollitical unrest you decided to leave and ignore those calls")
+            print("When you get back home you are met with a chapter out of smarfleet")
+            print("as you have been in breach of smarfeets core values")
+            log_event("ENDING", "Ignored calls for help", "SUCCESS")
+            state["flags"]["ending"] = "Ignored calls for help"
+            delete_save()
+            reset_state(state)
+            print("\n  [Save data cleared. Thanks for playing!]")
 
         else:
             state["location"] = "disabled_ship"
             state["scene_step"] = "disabled_start"
             log_event("CHOICE_MADE", "Selected=DisabledShip")
             disabled_ship_scene(state)
-
+    
     else:
         print("  You leave the bridge and head down the main corridor.")
 
@@ -85,7 +98,9 @@ def start_bridge(state: dict) -> None:
         state["scene_step"] = "corridor_apple"
 
         corridor_scene(state)
-
+        
+# --------------------------------------
+#  Corridor Scene
 
 @safe_action
 def corridor_scene(state: dict) -> None:
@@ -138,7 +153,7 @@ def corridor_scene(state: dict) -> None:
         )
 
         if action == "map":
-            print("  Map: colony ship to port — disabled ship to starboard.")
+            print("  Map: There is The Neutral Zone to the stern")
             save_game(state)
 
         elif action == "inv":
@@ -150,6 +165,8 @@ def corridor_scene(state: dict) -> None:
             state["scene_step"] = "bridge_choice"
             start_bridge(state)
 
+# --------------------------------------
+#  Colony Ship
 
 @safe_action
 def colony_ship_scene(state: dict) -> None:
@@ -299,6 +316,8 @@ def colony_ship_scene(state: dict) -> None:
 
     print("\n  [Save data cleared. Thanks for playing!]")
 
+# --------------------------------------
+#  Disabled Ship
 
 @safe_action
 def disabled_ship_scene(state: dict) -> None:
