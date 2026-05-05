@@ -317,20 +317,49 @@ def colony_ship_scene(state: dict) -> None:
     print("\n  [Save data cleared. Thanks for playing!]")
 
 # --------------------------------------
-#  Disabled Ship
+#  Disabled Ship Arrival
+def disabled_ship_arrival_scene(state):
+    state["location"] = "outside_ship"
+    print(
+            "\n  You drop out of warp and infront of you is the disabled ship. "
+            "The ship is a D7-class battlecruiser in the middle of nowhere"
+            "The sensors show there is 223 crewmembers left on board and the core is about to breach"
+            "(d) Drop shields and attempt to teleport the survivors off of the ship"
+            "(t) Teleport aboard and try to stabalize the ship"
+        )
+    sel = get_input("  Which do you approach? (d/t): ", ["d", "t"])
+    if(sel == "d"):
+        disabled_ship_combat_scene(state)
+    else:
+        disabled_ship_scene(state)
+        
+        
+# --------------------------------------
+#  Disabled Ship Boarding
 
 @safe_action
 def disabled_ship_scene(state: dict) -> None:
     state["location"] = "disabled_ship"
 
     if state.get("scene_step") in ("disabled_ship", "disabled_start"):
-        state["scene_step"] = "disabled_mira"
 
         print(
             "\n  You board the disabled ship. The warp core breach pulses on your "
-            "sensors like a countdown."
+            "sensors like a countdown.  Suddenly you hear wimpering coming from a locked door next to you"
+            "(t) Talk with Mira"
+            "(a) Attempt to unlock the door"
+            "(c) continue on"
         )
-
+        sel = get_input("  Which do you approach? (t/a/c): ", ["t", "a","c"])
+        
+        if(sel == "t"):
+            state["scene_step"] = "disabled_mira"
+        elif(sel == "a"):
+            state["scene_step"] = "disabled_terminal"
+        else:
+            state["scene_step"] = "big_decision"
+        
+        
     if state.get("scene_step") == "disabled_mira":
         talk_to_npc(state, "mira", add_item, remove_item, get_input, log_event)
 
@@ -347,23 +376,110 @@ def disabled_ship_scene(state: dict) -> None:
             success = terminal_puzzle(state)
 
         if success:
-            print(
-                "\n  You stabilise the core and escape through the security checkpoint.\n\n"
-                "  ★  VICTORY — Core Stabilized  ★"
-            )
-            log_event("ENDING", "CoreStabilized", "SUCCESS")
-            state["flags"]["ending"] = "CoreStabilized"
+            state["scene_step"] = "puppy_room"
+            
+            if state.get("scene_step") in ("disabled_terminal", "puppy_room"):
+                state["scene_step"] = "puppy_room"
+                save_game(state)
+
+                print(
+                "You open the door and find yourself looking at a most peculure creature"
+                "It looks like a mixture of wild boar and a bulldog.  It has a low, wide"
+                "body with short, thick legs.  Its head is big and round with a flat snout,"
+                "a wide mouth, and two sharp tusks sticking out.  The skin is rough and wrinkled,"
+                "often dark brown or gray, with little to no hair.  Its eyes are small and deep"
+                ", and its ears are short and slightly pointed. It has a name tag biscut\n"
+                )
+
+                if not state["flags"].get("puppy_room_taken"):
+                    if get_input("  Take him with you? (y/n): ", ["y", "n"]) == "y":
+                        add_item(state, "biscut")
+                        state["flags"]["puppy_room_taken"] = True
+                        save_game(state)
+
+            else:
+                print("The room is empty.")
+            state["scene_step"] = "core_stabilization"
 
         else:
-            print(
-                "\n  You failed to stabilise the core. You escape through maintenance tunnels.\n\n"
-                "  ★  ENDING — Maintenance Escape  ★"
+            print("You failed to open the door")
+            state["location"] = "disabled_ship"
+            disabled_ship_scene(state)
+            
+    if state.get("scene_step") == "core_stabilization":
+        state["location"] = "disabled_ship_engine_room"
+        print(
+                "You finally get to the core room everything is red alarms are blaring there is steam everywhere"
+                "Your engineer thinks it can be a quick fix, but it seems the console is locked"
+                "It apears to be the same type of lock at the other door"
             )
-            log_event("ENDING", "MaintenanceEscape", "SUCCESS")
-            state["flags"]["ending"] = "MaintenanceEscape"
+        success = False
+        success = terminal_puzzle(state)
+        if(success):
+            print(
+                "The console has been unlocked and the core has now been stabalized"
+                "While you were waiting for the engineer to work their magic you discover an ambush plot"
+                "Unfortunatly while you were reading one of the survivors saw what you were reading and they cant let that info leave"
+                "Your crew is taken before the captain of the ship"
+                )
+            state["scene_step"] = "taken_to_captain"
+            state["location"] = "disabled_ship_bridge"
+        else:
+            print(
+                "You were unable to access the panel and the smlingon ship is about to blow"
+                "Emergency transport is activated unfortunatly you and some of your crew made it back"
+                "the rest of your crew and the smlinons were blown up"
+                "You take whats left of your crew back to starbase 10"
+                )
+            log_event("ENDING", "unable to help", "SUCCESS")
+            state["flags"]["ending"] = "unable to help"
+            delete_save()
+            reset_state(state)
+            print("\n  [Save data cleared. Thanks for playing!]")   
+             
+    if state.get("scene_step") == "taken_to_captain":
+        
+        print("Hello smarfleet my name is Smlaa the captain of this fine vessle due to the loss of my favorite thing"
+              "I have little to no patence for insolence.  I hear that you have gotten your hands on some information"
+              "that should have been left alone.  I plan on killing you and your friends based on the information you read"
+              "you know I can as there is an entire fleet cloaked off your bow.\n"
+            )
+        
+        if "biscut" not in state["inventory"]:
+            sel = get_input("  Emergency beamout (e): ", ["e"])
+            print("You realize there is no negotiating with Smlaa so you enact emergency beam out")
+            state["scene_step"] = "combat"
+            state["location"] = "smenterprise_bridge"
+            disabled_ship_combat_scene(state)
+        else:
+            print("(e) Emergency beam out to the Smenterprise and keep biscut as a pet"
+                  "(g) Give Smlaa Biscut as a gift it may help the current situation")
+            sel = get_input("  Which do you approach? (e/g): ", ["e", "g"])
+            if(sel == "t"):
+                state["scene_step"] = "combat"
+                state["location"] = "smenterprise_bridge"
+                disabled_ship_combat_scene(state)
+            else:
+                print(
+                    "After you gave Smlaa biscut you realize that is what he was so distraught about losing"
+                    "Smlaa says these ships are so large there are so many places for a targ to hide"
+                    "He is just so full of joy that he lets you and your crew go unscathed with a heartfelt appology"
+                    "You and your crew head back to starbase 10 happy to be alive")
+                log_event("ENDING", "biscut_trade", "SUCCESS")
+                state["flags"]["ending"] = "biscut_trade"
+                delete_save()
+                reset_state(state)
+                print("\n  [Save data cleared. Thanks for playing!]")     
+            
+            
+            
+def disabled_ship_combat_scene(state):
+        
 
-    save_game(state)
-    delete_save()
-    reset_state(state)
+        #save_game(state)
+        #delete_save()
+        #reset_state(state)
 
-    print("\n  [Save data cleared. Thanks for playing!]")
+    #print("\n  [Save data cleared. Thanks for playing!]") #  neff
+
+    
