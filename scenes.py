@@ -330,6 +330,7 @@ def disabled_ship_arrival_scene(state):
     sel = get_input("  Which do you approach? (d/t): ", ["d", "t"])
     if(sel == "d"):
         disabled_ship_combat_scene(state)
+        state["scene_step"] = "combat_start"
     else:
         disabled_ship_scene(state)
         
@@ -448,7 +449,7 @@ def disabled_ship_scene(state: dict) -> None:
         if "biscut" not in state["inventory"]:
             sel = get_input("  Emergency beamout (e): ", ["e"])
             print("You realize there is no negotiating with Smlaa so you enact emergency beam out")
-            state["scene_step"] = "combat"
+            state["scene_step"] = "combat_start"
             state["location"] = "smenterprise_bridge"
             disabled_ship_combat_scene(state)
         else:
@@ -456,7 +457,7 @@ def disabled_ship_scene(state: dict) -> None:
                   "(g) Give Smlaa Biscut as a gift it may help the current situation")
             sel = get_input("  Which do you approach? (e/g): ", ["e", "g"])
             if(sel == "t"):
-                state["scene_step"] = "combat"
+                state["scene_step"] = "combat_start"
                 state["location"] = "smenterprise_bridge"
                 disabled_ship_combat_scene(state)
             else:
@@ -474,12 +475,31 @@ def disabled_ship_scene(state: dict) -> None:
             
             
 def disabled_ship_combat_scene(state):
-        
+    if state.get("scene_step") == "combat_start":
+        print(
+            "You got out of there just in time to not be gutted like a fish"
+            "Now there are more problems you are looking down the barrels of multiple fully armed "
+            "Birds-of-Prey.  You are we are heavily outgunned captain a bridge officer says\n")
+        if "Apple" in state["inventory"]:
+            print("(r) Try to warp out and escape"
+                  "(t) Talk to engineering "
+                  "(a) Use apple")
+            sel = get_input("  Which do you approach? (r/t/a): ", ["r", "t","a"])
+            if sel == "r":
+                print("They are jamming warp travel")
+                state["scene_step"] = "combat_middle"
+            elif sel == "t":
+                    talk_to_npc(state, "Smotty", add_item, remove_item, get_input, log_event)
+                    disabled_ship_combat_scene(state)
+            else:
+                print("using the apple made the Smenterprises bridge sutdown and reeboot"
+                      "The tactical officer informs you that all of the enemy shields are down"
+                      "One ")
 
         #save_game(state)
         #delete_save()
         #reset_state(state)
 
     #print("\n  [Save data cleared. Thanks for playing!]") #  neff
-
+#talk_to_npc(state, "mira", add_item, remove_item, get_input, log_event)
     
