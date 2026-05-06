@@ -484,7 +484,7 @@ def disabled_ship_combat_scene(state):
             print("(r) Try to warp out and escape"
                   "(t) Talk to engineering "
                   "(a) Use apple")
-            sel = get_input("  Which do you approach? (r/t/a): ", ["r", "t","a"])
+            sel = get_input("  Which do you choose? (r/t/a): ", ["r", "t","a"])
             if sel == "r":
                 print("They are jamming warp travel")
                 state["scene_step"] = "combat_middle"
@@ -494,8 +494,57 @@ def disabled_ship_combat_scene(state):
             else:
                 print("using the apple made the Smenterprises bridge sutdown and reeboot"
                       "The tactical officer informs you that all of the enemy shields are down"
-                      "One ")
-
+                      "One photon each should do lets not waste ammunition")
+                talk_to_npc(state, "Smones", add_item, remove_item, get_input, log_event)
+                print("Having foiled the smlingons attempt at an ambush against insurmountable odds"
+                      "you end the day victorious as you repair and set a course for starbase 10")
+                log_event("ENDING", "an_apple_a_day", "SUCCESS")
+                state["flags"]["ending"] = "an_apple_a_day"
+                delete_save()
+                reset_state(state)
+                print("\n  [Save data cleared. Thanks for playing!]")           
+        else:
+            print("(r) Try to warp out and escape"
+                  "(t) Talk to engineering")
+            sel = get_input("  Which do you choose? (r/t): ", ["r", "t"])
+            if sel == "r":
+                print("They are jamming warp travel")
+                state["scene_step"] = "combat_middle"
+            else:
+                    talk_to_npc(state, "Smotty", add_item, remove_item, get_input, log_event)
+                    disabled_ship_combat_scene(state)
+                    
+    if state.get("scene_step") == "combat_middle":  
+        survival = random.randint(1,10)
+        if "Coin" in state["inventory"]:
+            if(survival > 4):
+                state["scene_step"] = "victory"
+            else:
+                state["scene_step"] = "captured"
+        else:
+            if(survival < 5):
+                state["scene_step"] = "victory"
+            else:
+                state["scene_step"] = "captured"
+                
+    if state.get("scene_step") == "victory":
+        print("Though fiber defficient, battered, and deminished in the eyes of defete the Smenterprise and her crew endured."
+              "Against overwhelming odds, they seized the moment and thwarted the Smlingons carefully laid ambush, turning near"
+              "disaster into hard-won victory.")
+        log_event("ENDING", "hard_won", "SUCCESS")
+        state["flags"]["ending"] = "hard_won"
+        delete_save()
+        reset_state(state)
+        print("\n  [Save data cleared. Thanks for playing!]")      
+    else:
+        print("Though, in the eyes of defeat, the Smenterprise and her crew had fought hard with unwavering resolve,"
+              "their efforts were not enough.  Surrounded and outmatched, they were untimately captured-yet even in chains, their"
+              "defiance endured")
+        log_event("ENDING", "captured", "SUCCESS")
+        state["flags"]["ending"] = "captured"
+        delete_save()
+        reset_state(state)
+        print("\n  [Save data cleared. Thanks for playing!]") 
         #save_game(state)
         #delete_save()
         #reset_state(state)
