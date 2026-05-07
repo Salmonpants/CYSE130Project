@@ -181,141 +181,235 @@ def colony_ship_scene(state: dict) -> None:
   with extremely low energy readings. It's been out here a long, long time.""")
 
     if state.get("scene_step") == "colony_communicate":
-        while True:
-            action = get_input(
-                "\n  Attempt to communicate or teleport aboard? (c/t): ",
-                ["c", "t"]
-            )
-
-            if action == "t":
-                break
-
-            if "Schematic" not in state["inventory"]:
-                if random.random() < 0.5:
-                    print(
-                        "  A deep scan cuts through the interference — you receive a "
-                        "full schematic of the ship."
-                    )
-                    add_item(state, "Schematic")
-
-                else:
-                    print("  You receive no response.")
-
-            else:
-                print("  You receive no response.")
-
-        state["scene_step"] = "colony_inside"
-        save_game(state)
-
-    if state.get("scene_step") == "colony_inside":
-        print("""
-  You materialise inside a massive habitat-like structure — an Earth-like
-        atmosphere, a simulated day-night cycle. It's breathtaking.""")
-
-        state["scene_step"] = "colony_scan"
-
-    if state.get("scene_step") == "colony_scan":
-        while True:
-            action = get_input(
-                "\n  Look around or scan for life forms? (look/scan): ",
-                ["look", "scan"]
-            )
-
-            if action == "scan":
-                break
-
-            print("  You explore but find nothing immediately useful.")
-
-        print("  Thousands of humanoid life forms detected. There is a house nearby.")
-
-        state["scene_step"] = "colony_find_haru"
-        save_game(state)
-
-    if state.get("scene_step") == "colony_find_haru":
-        approach = get_input(
-            "\n  Search for inhabitants or look for the ship's engineer? (search/engineer): ",
-            ["search", "engineer"]
+        
+        action = get_input(
+            "\n  Attempt to communicate, teleport aboard, or scan the ship? (c/t/s): ",
+            ["c", "t","s"]
         )
 
-        if approach == "engineer":
-            talk_to_npc(state, "haru", add_item, remove_item, get_input, log_event)
-
-        else:
-            print("  You find a house — someone answers the door. It's an engineer named Haru.")
-            talk_to_npc(state, "haru", add_item, remove_item, get_input, log_event)
-
-        print(
-            "\n  You discover these people have no idea they are in space — or that "
-            "their ship is failing."
-        )
-
-        state["scene_step"] = "colony_repair"
-
-    if state.get("scene_step") == "colony_repair":
-        if "Schematic" in state["inventory"]:
-            print(
-                "\n  You show Haru the schematic. The truth settles over the colony "
-                "like a cold wave — they are in space, and their ship is dying."
-            )
-
-            print(
-                "  Back on the Smenterprise the replicator is on the fritz. "
-                "You attempt to fabricate parts."
-            )
-
-            choice = get_input(
-                "\n  Attempt repairs yourself or teach them to do it? (self/teach): ",
-                ["self", "teach"]
-            )
-
-            if choice == "self":
-                chance = 0.9 if "Coin" in state["inventory"] else 0.7
-
-                if random.random() < chance:
-                    print(
-                        "\n  Every component fabricated. The colony ship is restored to "
-                        "factory condition in record time. The colonists are grateful.\n\n"
-                        "  ★  VICTORY — Colony Saved  ★"
-                    )
-                    log_event("ENDING", "ColonyRepair", "SUCCESS")
-                    state["flags"]["ending"] = "ColonyRepair"
-
-                else:
-                    print(
-                        "\n  The replicator failed on one critical part. You scavenged "
-                        "both ships and got things to mostly working order.\n\n"
-                        "  ★  VICTORY — Colony Partially Repaired  ★"
-                    )
-                    log_event("ENDING", "ColonyRepairPartial", "SUCCESS")
-                    state["flags"]["ending"] = "ColonyRepairPartial"
-
-            else:
-                print(
-                    "\n  You walk Haru through every system. The colonists take over "
-                    "repairs and succeed — on their own terms.\n\n"
-                    "  ★  VICTORY — Colony Self-Sufficient  ★"
-                )
-                log_event("ENDING", "ColonyTaught", "SUCCESS")
-                state["flags"]["ending"] = "ColonyTaught"
-
-        else:
-            print(
-                "\n  Without a schematic you can't complete repairs. You head back to "
-                "search for more resources."
-            )
-            log_event("CHOICE_MADE", "Colony_NoSchematic")
-
-            state["location"] = "bridge"
-            state["scene_step"] = "bridge_choice"
+        if action == "t":
+            state["scene_step"] = "borded_colony"
+            state["location"] = "inside_colony_ship"
             save_game(state)
-            return
+            
+        elif(action == 'c'):
+            print("You attempt to communicate but the only response is the silence of space")
+            state["scene_step"] = "colony_communicate"
+            colony_ship_scene(state)
+            save_game(state)
+        else:
+            if not state["flags"].get("ship_schematic_taken"):
+                if get_input("  Pick it up? (y/n): ", ["y", "n"]) == "y":
+                    add_item(state, "Ship_Schematic")
+                    state["flags"]["ship_schematic_taken"] = True
 
-    save_game(state)
-    delete_save()
-    reset_state(state)
+            else:
+                print("There is nothing else to learn from this ship")
+            save_game(state)    
+        
+        
+    if state.get("scene_step") == "borded_colony":    
+        print(
+            """You materialise inside a massive habitat-like structure — an Earth-like
+        atmosphere, a simulated day-night cycle. It's breathtaking."""
+        )
+        print("    (s) Scan the surroundings")
+        print("    (l) Look around")
+        
+        while(True):
+            sel = get_input("  Which do you approach? (s/l): ", ["s", "l"])
+            if(sel == "s"):
+                print("Thousands of humanoid life forms detected. There is a house nearby")
+            else:
+                break
+        print("There is a nice looking house nearby")
+        print("    (r) Ring the door bell")
+        print("    (k) Knock")
+        sel = get_input("  Which do you approach? (r/k): ", ["r", "k"])
+        state["scene_step"] = "colony_house"
+        state["location"] = "inside_colony_ship_house"
+        save_game(state)
+    
+    if state.get("scene_step") == "colony_house":  
+        talk_to_npc(state, "haru", add_item, remove_item, get_input, log_event)
+        
+        print("You discover these people have no idea they are in space and that their ship is failing\n")
+        
+        print("    (t) Try to affect repairs yourself and leave the denizens to not know")
+        print("    (e) Educate them on their current situation and have them help with the repairs\n")
+        
+        sel = get_input("  Which do you approach? (t/e): ", ["t", "e"])
+        
+        if sel == "t":
+            state["scene_step"] = "colony_ship_solo"
+            save_game(state)
+        else:
+            state["scene_step"] = "colony_ship_together"
+    
+    if state.get("scene_step") == "colony_ship_solo":
+        
+        print("Arriving back after your exploration you find that your replicatior is on the fritz"
+              "and intermitantly making things and you attempt to make parts for the colony ship")
+         
+        if "Coin" in state["inventory"]:
+            val = random.randint(1,10)
+            if val > 1:
+                state["scene_step"] = "colony_ship_replicator_success1"
+            else:
+                state["scene_step"] = "colony_ship_replicator_failure1"
+            
+        else:
+            val = random.randint(1,10)
+            if val > 3:
+                state["scene_step"] = "colony_ship_replicator_success1"
+            else:
+                state["scene_step"] = "colony_ship_replicator_failure1"
+                
+    if state.get("scene_step") == "colony_ship_replicator_success1":
+        if not state["flags"].get("ship_components_taken"):
+                    if get_input("  Take them with you? (y/n): ", ["y", "n"]) == "y":
+                        add_item(state, "Ship_Components")
+                        state["flags"]["ship_components_taken"] = True
+                        save_game(state)
+        if "Ship_Components" in state["inventory"]:
+             
+            print(
+                "\n  Every component fabricated. The colony ship is restored to "
+                "factory condition in record time. The colonists are grateful.\n\n"
+                "  ★  VICTORY — Colony Saved  ★"
+                            )
+            log_event("ENDING", "ColonyRepair", "SUCCESS")
+            state["flags"]["ending"] = "ColonyRepair"
+        else:
+            print(
+               "The parts that were just maid got lost and the replicator is completely broken"
+               "The crew did the best they can and got it back up to half of new, but that is good enough we hope"
+                            )
+            log_event("ENDING", "Lost_Supplies", "SUCCESS")
+            state["flags"]["ending"] = "Lost_Supplies"
+        save_game(state)
+        delete_save()
+        reset_state(state)
+        print("\n  [Save data cleared. Thanks for playing!]")
 
-    print("\n  [Save data cleared. Thanks for playing!]")
-
+        
+    if state.get("scene_step") == "colony_ship_replicator_failure1":
+        print(
+            "\n  The replicator failed on one critical part. You scavenged "
+            "both ships and got things to mostly working order.\n\n"
+            "  ★  Good Job — Colony Partially Repaired  ★"
+                    )
+                    
+        log_event("ENDING", "ColonyRepairPartial", "SUCCESS")
+        state["flags"]["ending"] = "ColonyRepairPartial"
+        save_game(state)
+        delete_save()
+        reset_state(state)
+        print("\n  [Save data cleared. Thanks for playing!]")
+                       
+            
+    if state.get("scene_step") == "colony_ship_together":
+        
+        
+        if "Ship_Schematic" in state["inventory"]:
+            
+            print("    (u) Use the ship schematic")
+            print("    (e) Educate them and try to get them to fully understand their position")
+            sel = get_input("  Which do you approach? (u/e): ", ["u", "e"])
+            if(sel == "u"):
+                print("Using the ship schematic proves effective")
+                state["scene_step"] = "colony_ship_understanding_success"
+            else:
+                state["scene_step"] = "colony_ship_understanding"
+        else:
+            state["scene_step"] = "colony_ship_understanding"
+        
+    if state.get("scene_step") == "colony_ship_understanding":
+        val = random.randint(1,10)
+        if "Coin" in state["inventory"]:
+            if val > 3:
+                state["scene_step"] = "colony_ship_understanding_success"
+            else:
+                state["scene_step"] = "colony_ship_understanding_failure"
+            
+        else:
+            if val > 5:
+                state["scene_step"] = "colony_ship_understanding_success"
+            else:
+                state["scene_step"] = "colony_ship_understanding_failure"
+                
+    if state.get("scene_step") == "colony_ship_understanding_success":
+        print("You took the the time to educate them about the entire scope of their problems"
+              "They were rightfuly not believeing this story, but with effort you won them over"
+              "The crew of the colony ship is ready to help you help them")
+        state["scene_step"] = "colony_ship_group"
+    
+    if state.get("scene_step") == "colony_ship_understanding_failure":
+        print("Unfortunatly no matter what was said it seems as they will never believe you or your story"
+              "But smarfleet is in th buisness of helping those in need even if they don't know it")
+        state["scene_step"] = "colony_ship_solo"
+        colony_ship_scene(state)
+    
+    if state.get("scene_step") == "colony_ship_group":
+        
+        print("Arriving back after your exploration you find that your replicatior is on the fritz"
+              "and intermitantly making things and you attempt to make parts for the colony ship")
+        val = random.randint(1,10)
+        
+        if "Coin" in state["inventory"]:
+            if val > 1:
+                state["scene_step"] = "colony_ship_replicator_success2"
+            else:
+                state["scene_step"] = "colony_ship_replicator_failure2"
+            
+        else:
+            if val > 3:
+                state["scene_step"] = "colony_ship_replicator_success2"
+            else:
+                state["scene_step"] = "colony_ship_replicator_failure2"
+                
+    if state.get("scene_step") == "colony_ship_replicator_success2":
+        if not state["flags"].get("ship_components_taken"):
+                    if get_input("  Take them with you? (y/n): ", ["y", "n"]) == "y":
+                        add_item(state, "Ship_Components")
+                        state["flags"]["ship_components_taken"] = True
+                        save_game(state)
+        
+        if "Ship_Components" in state["inventory"]:
+             
+            print(
+                "You greatly repair the ship to factory or better conditions and complete the extrenuous repairs in record time "
+                "The people are greateful for the help and now have an understading of where their lives are going with a renewed mission"
+                            )
+            log_event("ENDING", "ColonyRepairGroup", "SUCCESS")
+            state["flags"]["ending"] = "ColonyRepairGroup"
+            save_game(state)
+            delete_save()
+            reset_state(state)
+            print("\n  [Save data cleared. Thanks for playing!]")
+        else:
+            print(
+               "The parts that were just made got lost and the replicator is completely broken"
+               "The crew did the best they can and got it back up to half of new, but that is good enough we hope"
+                            )
+            log_event("ENDING", "ColonyRepairGroupSuppliesLost", "SUCCESS")
+            state["flags"]["ending"] = "ColonyRepairGroupSuppliesLost"
+            save_game(state)
+            delete_save()
+            reset_state(state)
+            print("\n  [Save data cleared. Thanks for playing!]")
+    if state.get("scene_step") == "colony_ship_replicator_failure2":
+        print(
+            "The crew is dissapointed that the replicator failed, but with their new found understanding they were able to work with you and your crew"
+            "to not repair the ship all the way but enough to get them where they were going"
+                        )
+        log_event("ENDING", "ColonyPartialGroup", "SUCCESS")
+        state["flags"]["ending"] = "ColonyPartialGroup"
+        save_game(state)
+        delete_save()
+        reset_state(state)
+        print("\n  [Save data cleared. Thanks for playing!]")
+    
 # --------------------------------------
 #  Disabled Ship Arrival
 def disabled_ship_arrival_scene(state):
@@ -447,7 +541,7 @@ def disabled_ship_scene(state: dict) -> None:
             )
         
         if "biscut" not in state["inventory"]:
-            sel = get_input("  Emergency beamout (e): ", ["e"])
+            sel = get_input("  Emergency beam out (e): ", ["e"])
             print("You realize there is no negotiating with Smlaa so you enact emergency beam out")
             state["scene_step"] = "combat_start"
             state["location"] = "smenterprise_bridge"
@@ -472,7 +566,8 @@ def disabled_ship_scene(state: dict) -> None:
                 reset_state(state)
                 print("\n  [Save data cleared. Thanks for playing!]")     
             
-            
+# --------------------------------------
+#  Disabled Ship Combat Scene           
             
 def disabled_ship_combat_scene(state):
     if state.get("scene_step") == "combat_start":
@@ -530,7 +625,7 @@ def disabled_ship_combat_scene(state):
     if state.get("scene_step") == "victory":
         print("Though fiber defficient, battered, and deminished in the eyes of defete the Smenterprise and her crew endured."
               "Against overwhelming odds, they seized the moment and thwarted the Smlingons carefully laid ambush, turning near"
-              "disaster into hard-won victory.")
+              "disaster into hard-won victory."  )
         log_event("ENDING", "hard_won", "SUCCESS")
         state["flags"]["ending"] = "hard_won"
         delete_save()
@@ -545,9 +640,7 @@ def disabled_ship_combat_scene(state):
         delete_save()
         reset_state(state)
         print("\n  [Save data cleared. Thanks for playing!]") 
-        #save_game(state)
-        #delete_save()
-        #reset_state(state)
+        
 
     #print("\n  [Save data cleared. Thanks for playing!]") #  neff
 #talk_to_npc(state, "mira", add_item, remove_item, get_input, log_event)
