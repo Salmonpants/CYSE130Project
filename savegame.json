@@ -1,0 +1,12 @@
+{
+  "state": {
+    "inventory": [],
+    "location": "disabled_ship",
+    "scene_step": "disabled_terminal",
+    "flags": {
+      "talked_to_mira": true
+    },
+    "story_progress": []
+  },
+  "hash": "9d5675453e18909f751846bff9d5e3c96ac9ee2c9f3aa06991e4a1c62235ee47"
+}
