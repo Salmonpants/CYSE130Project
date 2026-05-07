@@ -75,8 +75,8 @@ def start_bridge(state: dict) -> None:
             log_event("CHOICE_MADE", "Selected=ColonyShip")
             colony_ship_scene(state)
             
-        elif choice == "i":
-            print("In the light of pollitical unrest you decided to leave and ignore those calls")
+        elif sel == "i":
+            print("In the light of political unrest you decided to leave and ignore those calls")
             print("When you get back home you are met with a chapter out of smarfleet")
             print("as you have been in breach of smarfeets core values")
             log_event("ENDING", "Ignored calls for help", "SUCCESS")
@@ -339,14 +339,14 @@ def colony_ship_scene(state: dict) -> None:
                 state["scene_step"] = "colony_ship_understanding_failure"
                 
     if state.get("scene_step") == "colony_ship_understanding_success":
-        print("You took the the time to educate them about the entire scope of their problems"
-              "They were rightfuly not believeing this story, but with effort you won them over"
-              "The crew of the colony ship is ready to help you help them")
+        print("You took the the time to educate them about the entire scope of their problems. "
+              "They were rightfuly not believeing this story, but with effort you won them over. "
+              "The crew of the colony ship is ready to help you help them. ")
         state["scene_step"] = "colony_ship_group"
     
     if state.get("scene_step") == "colony_ship_understanding_failure":
-        print("Unfortunatly no matter what was said it seems as they will never believe you or your story"
-              "But smarfleet is in th buisness of helping those in need even if they don't know it")
+        print("Unfortunatly no matter what was said it seems as they will never believe you or your story. "
+              "But smarfleet is in th buisness of helping those in need even if they don't know it. ")
         state["scene_step"] = "colony_ship_solo"
         colony_ship_scene(state)
     
@@ -378,7 +378,7 @@ def colony_ship_scene(state: dict) -> None:
         if "Ship_Components" in state["inventory"]:
              
             print(
-                "You greatly repair the ship to factory or better conditions and complete the extrenuous repairs in record time "
+                "You greatly repair the ship to factory or better conditions and complete the extrenuous repairs in record time. "
                 "The people are greateful for the help and now have an understading of where their lives are going with a renewed mission"
                             )
             log_event("ENDING", "ColonyRepairGroup", "SUCCESS")
@@ -389,8 +389,8 @@ def colony_ship_scene(state: dict) -> None:
             print("\n  [Save data cleared. Thanks for playing!]")
         else:
             print(
-               "The parts that were just made got lost and the replicator is completely broken"
-               "The crew did the best they can and got it back up to half of new, but that is good enough we hope"
+               "The parts that were just made got lost and the replicator is completely broken. "
+               "The crew did the best they can and got it back up to half of new, but that is good enough we hope."
                             )
             log_event("ENDING", "ColonyRepairGroupSuppliesLost", "SUCCESS")
             state["flags"]["ending"] = "ColonyRepairGroupSuppliesLost"
@@ -441,9 +441,9 @@ def disabled_ship_scene(state: dict) -> None:
         print(
             "\n  You board the disabled ship. The warp core breach pulses on your "
             "sensors like a countdown.  Suddenly you hear wimpering coming from a locked door next to you"
-            "(t) Talk with Mira"
-            "(a) Attempt to unlock the door"
-            "(c) continue on"
+            "\n(t) Talk with Mira"
+            "\n(a) Attempt to unlock the door"
+            "\n(c) continue on"
         )
         sel = get_input("  Which do you approach? (t/a/c): ", ["t", "a","c"])
         
@@ -478,7 +478,7 @@ def disabled_ship_scene(state: dict) -> None:
                 save_game(state)
 
                 print(
-                "You open the door and find yourself looking at a most peculure creature"
+                "You open the door and find yourself looking at a most peculure creature."
                 "It looks like a mixture of wild boar and a bulldog.  It has a low, wide"
                 "body with short, thick legs.  Its head is big and round with a flat snout,"
                 "a wide mouth, and two sharp tusks sticking out.  The skin is rough and wrinkled,"
@@ -504,7 +504,7 @@ def disabled_ship_scene(state: dict) -> None:
     if state.get("scene_step") == "core_stabilization":
         state["location"] = "disabled_ship_engine_room"
         print(
-                "You finally get to the core room everything is red alarms are blaring there is steam everywhere"
+                "You finally get to the core room everything is red alarms are blaring there is steam everywhere."
                 "Your engineer thinks it can be a quick fix, but it seems the console is locked"
                 "It apears to be the same type of lock at the other door"
             )
@@ -521,10 +521,10 @@ def disabled_ship_scene(state: dict) -> None:
             state["location"] = "disabled_ship_bridge"
         else:
             print(
-                "You were unable to access the panel and the smlingon ship is about to blow"
-                "Emergency transport is activated unfortunatly you and some of your crew made it back"
-                "the rest of your crew and the smlinons were blown up"
-                "You take whats left of your crew back to starbase 10"
+                "You were unable to access the panel and the smlingon ship is about to blow."
+                "Emergency transport is activated unfortunatly you and some of your crew made it back."
+                "the rest of your crew and the smlinons were blown up."
+                "You take whats left of your crew back to starbase 10."
                 )
             log_event("ENDING", "unable to help", "SUCCESS")
             state["flags"]["ending"] = "unable to help"
@@ -641,7 +641,3 @@ def disabled_ship_combat_scene(state):
         reset_state(state)
         print("\n  [Save data cleared. Thanks for playing!]") 
         
-
-    #print("\n  [Save data cleared. Thanks for playing!]") #  neff
-#talk_to_npc(state, "mira", add_item, remove_item, get_input, log_event)
-    
