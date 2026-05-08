@@ -55,6 +55,7 @@ def start_bridge(state: dict) -> None:
 
     if choice == "talk":
         talk_to_npc(state, "smock", add_item, remove_item, get_input, log_event)
+        print()
         save_game(state)
         start_bridge(state)
 
@@ -89,7 +90,7 @@ def start_bridge(state: dict) -> None:
             state["location"] = "disabled_ship"
             state["scene_step"] = "disabled_start"
             log_event("CHOICE_MADE", "Selected=DisabledShip")
-            disabled_ship_scene(state)
+            disabled_ship_arrival_scene(state)
     
     else:
         print("  You leave the bridge and head down the main corridor.")
@@ -140,12 +141,12 @@ def corridor_scene(state: dict) -> None:
         print("\n  You reach a junction with a map terminal.")
 
         action = get_input(
-            "  Open the map, check inventory, or go back to the bridge? (map/inv/back): ",
+            "\n  Open the map, check inventory, or go back to the bridge? (map/inv/back): ",
             ["map", "inv", "back"]
         )
 
         if action == "map":
-            print("  Map: There is The Neutral Zone to the bow")
+            print("\n  Map: There is The Neutral Zone to the bow")
             save_game(state)
 
         elif action == "inv":
@@ -185,15 +186,17 @@ def colony_ship_scene(state: dict) -> None:
             save_game(state)
             
         elif(action == 'c'):
-            print("You attempt to communicate but the only response is the silence of space")
+            print("\n  You attempt to communicate but the only response is the silence of space")
             state["scene_step"] = "colony_communicate"
             colony_ship_scene(state)
             save_game(state)
         else:
             if not state["flags"].get("ship_schematic_taken"):
+                print("After tedious amounts of multi phasic, gamma, neutrino, thermal, and structural scans you gain a full schematic of the ship")
                 if get_input("  Pick it up? (y/n): ", ["y", "n"]) == "y":
                     add_item(state, "Ship_Schematic")
                     state["flags"]["ship_schematic_taken"] = True
+                    save_game(state)
 
             else:
                 print("There is nothing else to learn from this ship")
@@ -202,8 +205,8 @@ def colony_ship_scene(state: dict) -> None:
         
     if state.get("scene_step") == "borded_colony":    
         print(
-            """You materialise inside a massive habitat-like structure — an Earth-like
-        atmosphere, a simulated day-night cycle. It's breathtaking."""
+            """\n  You materialise inside a massive habitat-like structure — an Earth-like
+        atmosphere, a simulated day-night cycle. It's breathtaking.\n"""
         )
         print("    (s) Scan the surroundings")
         print("    (l) Look around")
@@ -211,10 +214,10 @@ def colony_ship_scene(state: dict) -> None:
         while(True):
             sel = get_input("  Which do you approach? (s/l): ", ["s", "l"])
             if(sel == "s"):
-                print("Thousands of humanoid life forms detected. There is a house nearby")
+                print("  Thousands of humanoid life forms detected. There is a house nearby\n")
             else:
                 break
-        print("There is a nice looking house nearby")
+        print("\n  There is a nice looking house nearby")
         print("    (r) Ring the door bell")
         print("    (k) Knock")
         sel = get_input("  Which do you approach? (r/k): ", ["r", "k"])
@@ -222,15 +225,17 @@ def colony_ship_scene(state: dict) -> None:
         state["location"] = "inside_colony_ship_house"
         save_game(state)
     
-    if state.get("scene_step") == "colony_house":  
+    if state.get("scene_step") == "colony_house":
+        print()  
         talk_to_npc(state, "haru", add_item, remove_item, get_input, log_event)
         
-        print("You discover these people have no idea they are in space and that their ship is failing\n")
+        print("\n  You discover these people have no idea they are in space and that their ship is failing\n")
         
         print("    (t) Try to affect repairs yourself and leave the denizens to not know")
         print("    (e) Educate them on their current situation and have them help with the repairs\n")
         
         sel = get_input("  Which do you approach? (t/e): ", ["t", "e"])
+        print()
         
         if sel == "t":
             state["scene_step"] = "colony_ship_solo"
@@ -309,7 +314,7 @@ def colony_ship_scene(state: dict) -> None:
             print("    (e) Educate them and try to get them to fully understand their position")
             sel = get_input("  Which do you approach? (u/e): ", ["u", "e"])
             if(sel == "u"):
-                print("Using the ship schematic proves effective")
+                print("\n  Using the ship schematic proves effective")
                 state["scene_step"] = "colony_ship_understanding_success"
             else:
                 state["scene_step"] = "colony_ship_understanding"
@@ -331,7 +336,7 @@ def colony_ship_scene(state: dict) -> None:
                 state["scene_step"] = "colony_ship_understanding_failure"
                 
     if state.get("scene_step") == "colony_ship_understanding_success":
-        print("You took the the time to educate them about the entire scope of their problems. "
+        print("\n  You took the the time to educate them about the entire scope of their problems. "
               "They were rightfuly not believeing this story, but with effort you won them over. "
               "The crew of the colony ship is ready to help you help them. ")
         state["scene_step"] = "colony_ship_group"
@@ -410,13 +415,13 @@ def disabled_ship_arrival_scene(state):
             "\n  You drop out of warp and infront of you is the disabled ship. "
             "The ship is a D7-class battlecruiser in the middle of nowhere"
             "The sensors show there is 223 crewmembers left on board and the core is about to breach"
-            "(d) Drop shields and attempt to teleport the survivors off of the ship"
-            "(t) Teleport aboard and try to stabalize the ship"
         )
+    print("  (d) Drop shields and attempt to teleport the survivors off of the ship")
+    print("  (t) Teleport aboard and try to stabalize the ship")
     sel = get_input("  Which do you approach? (d/t): ", ["d", "t"])
     if(sel == "d"):
-        disabled_ship_combat_scene(state)
         state["scene_step"] = "combat_start"
+        disabled_ship_combat_scene(state)
     else:
         disabled_ship_scene(state)
         
@@ -470,7 +475,7 @@ def disabled_ship_scene(state: dict) -> None:
                 save_game(state)
 
                 print(
-                "You open the door and find yourself looking at a most peculure creature."
+                "\nYou open the door and find yourself looking at a most peculure creature."
                 "It looks like a mixture of wild boar and a bulldog.  It has a low, wide"
                 "body with short, thick legs.  Its head is big and round with a flat snout,"
                 "a wide mouth, and two sharp tusks sticking out.  The skin is rough and wrinkled,"
@@ -496,7 +501,7 @@ def disabled_ship_scene(state: dict) -> None:
     if state.get("scene_step") == "core_stabilization":
         state["location"] = "disabled_ship_engine_room"
         print(
-                "You finally get to the core room everything is red alarms are blaring there is steam everywhere."
+                "\nYou finally get to the core room everything is red alarms are blaring there is steam everywhere."
                 "Your engineer thinks it can be a quick fix, but it seems the console is locked"
                 "It apears to be the same type of lock at the other door"
             )
@@ -513,7 +518,7 @@ def disabled_ship_scene(state: dict) -> None:
             state["location"] = "disabled_ship_bridge"
         else:
             print(
-                "You were unable to access the panel and the smlingon ship is about to blow."
+                "\nYou were unable to access the panel and the smlingon ship is about to blow."
                 "Emergency transport is activated unfortunatly you and some of your crew made it back."
                 "the rest of your crew and the smlinons were blown up."
                 "You take whats left of your crew back to starbase 10."
