@@ -9,7 +9,9 @@ from scenes import (
     start_bridge,
     corridor_scene,
     colony_ship_scene,
-    disabled_ship_scene
+    disabled_ship_arrival_scene,
+    disabled_ship_scene,
+    disabled_ship_combat_scene
 )
 
 
@@ -44,9 +46,15 @@ def explore_location(state: dict) -> None:
 
     elif loc == "colony_ship":
         colony_ship_scene(state)
+        
+    elif loc == "outside_ship":
+        disabled_ship_arrival_scene(state)
 
     elif loc == "disabled_ship":
         disabled_ship_scene(state)
+    
+    elif loc == "smenterprise_bridge":
+        disabled_ship_combat_scene(state)
 
     else:
         print(f"  [Unknown location '{loc}' — returning to bridge.]")
