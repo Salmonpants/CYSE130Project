@@ -49,7 +49,7 @@ def start_bridge(state: dict) -> None:
     print("\n  You are on the bridge. Smock stands at the science station.")
 
     choice = get_input(
-        "  Talk to Smock, check the console, or leave the bridge? (talk/console/leave): ",
+        "\n  Talk to Smock, check the console, or leave the bridge? (talk/console/leave): ",
         ["talk", "console", "leave"]
     )
 
@@ -76,7 +76,7 @@ def start_bridge(state: dict) -> None:
             colony_ship_scene(state)
             
         elif sel == "i":
-            print("In the light of political unrest you decided to leave and ignore those calls")
+            print("\nIn the light of political unrest you decided to leave and ignore those calls")
             print("When you get back home you are met with a chapter out of smarfleet")
             print("as you have been in breach of smarfeets core values")
             log_event("ENDING", "Ignored calls for help", "SUCCESS")
@@ -134,15 +134,7 @@ def corridor_scene(state: dict) -> None:
         else:
             print("  The coin is gone; you already picked it up.")
 
-        state["scene_step"] = "corridor_encounter"
-
-    if state.get("scene_step") == "corridor_encounter":
-        if not state["flags"].get("corridor_encounter_done"):
-            corridor_encounter(state)
-            state["flags"]["corridor_encounter_done"] = True
-
         state["scene_step"] = "corridor_junction"
-        save_game(state)
 
     if state.get("scene_step") == "corridor_junction":
         print("\n  You reach a junction with a map terminal.")
@@ -153,7 +145,7 @@ def corridor_scene(state: dict) -> None:
         )
 
         if action == "map":
-            print("  Map: There is The Neutral Zone to the stern")
+            print("  Map: There is The Neutral Zone to the bow")
             save_game(state)
 
         elif action == "inv":
