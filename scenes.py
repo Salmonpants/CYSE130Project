@@ -577,6 +577,8 @@ def disabled_ship_scene(state: dict) -> None:
 #  Disabled Ship Combat Scene           
             
 def disabled_ship_combat_scene(state):
+    state["location"] = "smenterprise_bridge"
+    
     if state.get("scene_step") == "combat_start":
         print(
             "\nNow there are more problems as you are looking down the barrels of multiple fully armed "
