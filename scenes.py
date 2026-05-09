@@ -477,7 +477,6 @@ def disabled_ship_scene(state: dict) -> None:
             print("You failed to open the door")
             state["scene_step"] = "disabled_ship"
             state["location"] = "disabled_ship"
-            
             disabled_ship_scene(state)
             
         if state.get("scene_step") == "puppy_room":
