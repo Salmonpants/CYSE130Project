@@ -13,7 +13,11 @@ def terminal_puzzle(state: dict) -> bool:
     Returns True on success, False on failure.
     """
     secret = random.choice(["zen", "ark", "ion", "sol", "tau"])
-    attempts = 3
+    
+    if "AccessCode" in state["inventory"]:
+        attempts = 40
+    else:
+        attempts = 20
 
     log_event("CHALLENGE_ATTEMPT", "Puzzle=TerminalLogin START")
 
