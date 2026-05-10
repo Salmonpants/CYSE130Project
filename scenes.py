@@ -244,7 +244,7 @@ def colony_ship_scene(state: dict) -> None:
     if state.get("scene_step") == "colony_ship_solo":
         
         print("Arriving back after your exploration you find that your replicatior is on the fritz"
-              "and intermitantly making things and you attempt to make parts for the colony ship")
+              "and intermittently making things up and you attempt to make parts for the colony ship")
          
         if "Coin" in state["inventory"]:
             val = random.randint(1,10)
@@ -277,8 +277,8 @@ def colony_ship_scene(state: dict) -> None:
             state["flags"]["ending"] = "ColonyRepair"
         else:
             print(
-               "The parts that were just maid got lost and the replicator is completely broken"
-               "The crew did the best they can and got it back up to half of new, but that is good enough we hope"
+               "The parts that were just made got lost and the replicator is completely broken"
+               "The crew did the best they could and got it back up to half of new, but that is good enough we hope"
                             )
             log_event("ENDING", "Lost_Supplies", "SUCCESS")
             state["flags"]["ending"] = "Lost_Supplies"
@@ -335,20 +335,20 @@ def colony_ship_scene(state: dict) -> None:
                 
     if state.get("scene_step") == "colony_ship_understanding_success":
         print("\n  You took the the time to educate them about the entire scope of their problems. "
-              "They were rightfuly not believeing this story, but with effort you won them over. "
+              "They were rightfully not believeing this story, but with effort you won them over. "
               "The crew of the colony ship is ready to help you help them. ")
         state["scene_step"] = "colony_ship_group"
     
     if state.get("scene_step") == "colony_ship_understanding_failure":
-        print("Unfortunatly no matter what was said it seems as they will never believe you or your story. "
-              "But smarfleet is in th buisness of helping those in need even if they don't know it. ")
+        print("Unfortunately no matter what was said it seems as they will never believe you or your story. "
+              "But Smarfleet is in the buisness of helping those in need even if they don't know it. ")
         state["scene_step"] = "colony_ship_solo"
         colony_ship_scene(state)
     
     if state.get("scene_step") == "colony_ship_group":
         
         print("Arriving back after your exploration you find that your replicatior is on the fritz"
-              "and intermitantly making things and you attempt to make parts for the colony ship")
+              "and intermittently making things and you attempt to make parts for the colony ship")
         val = random.randint(1,10)
         
         if "Coin" in state["inventory"]:
@@ -373,8 +373,8 @@ def colony_ship_scene(state: dict) -> None:
         if "Ship_Components" in state["inventory"]:
              
             print(
-                "You greatly repair the ship to factory or better conditions and complete the extrenuous repairs in record time. "
-                "The people are greateful for the help and now have an understading of where their lives are going with a renewed mission"
+                "You greatly repair the ship to factory or better conditions and complete the strenuous repairs in record time. "
+                "The people are greateful for the help and now have an understanding of where their lives are going with a renewed mission"
                             )
             log_event("ENDING", "ColonyRepairGroup", "SUCCESS")
             state["flags"]["ending"] = "ColonyRepairGroup"
@@ -385,7 +385,7 @@ def colony_ship_scene(state: dict) -> None:
         else:
             print(
                "The parts that were just made got lost and the replicator is completely broken. "
-               "The crew did the best they can and got it back up to half of new, but that is good enough we hope."
+               "The crew did the best they could and got it back up to half of new, but that is good enough we hope."
                             )
             log_event("ENDING", "ColonyRepairGroupSuppliesLost", "SUCCESS")
             state["flags"]["ending"] = "ColonyRepairGroupSuppliesLost"
@@ -484,7 +484,7 @@ def disabled_ship_scene(state: dict) -> None:
             save_game(state)
 
             print(
-            "\nYou open the door and find yourself looking at a most peculure creature."
+            "\nYou open the door and find yourself looking at a most peculiar creature."
             "It looks like a mixture of wild boar and a bulldog.  It has a low, wide"
             "body with short, thick legs.  Its head is big and round with a flat snout,"
             "a wide mouth, and two sharp tusks sticking out.  The skin is rough and wrinkled,"
@@ -508,7 +508,7 @@ def disabled_ship_scene(state: dict) -> None:
     if state.get("scene_step") == "core_stabilization":
         save_game(state)
         print(
-                "\nYou finally get to the core room everything is red alarms are blaring there is steam everywhere."
+                "\nYou finally get to the core room everything is red, alarms are blaring, there is steam everywhere."
                 "Your engineer thinks it can be a quick fix, but it seems the console is locked"
                 "It apears to be the same type of lock at the other door"
             )
@@ -518,7 +518,7 @@ def disabled_ship_scene(state: dict) -> None:
             print(
                 "The console has been unlocked and the core has now been stabalized"
                 "While you were waiting for the engineer to work their magic you discover an ambush plot"
-                "Unfortunatly while you were reading one of the survivors saw what you were reading and they cant let that info leave"
+                "Unfortunately, while you were reading one of the survivors saw what you were reading and they cant let that info leave"
                 "Your crew is taken before the captain of the ship"
                 )
             state["scene_step"] = "taken_to_captain"
@@ -526,7 +526,7 @@ def disabled_ship_scene(state: dict) -> None:
         else:
             print(
                 "\nYou were unable to access the panel and the smlingon ship is about to blow."
-                "Emergency transport is activated unfortunatly you and some of your crew made it back."
+                "Emergency transport is activated, fortunately you and some of your crew made it back."
                 "the rest of your crew and the smlinons were blown up."
                 "You take whats left of your crew back to starbase 10."
                 )
@@ -538,10 +538,10 @@ def disabled_ship_scene(state: dict) -> None:
              
     if state.get("scene_step") == "taken_to_captain":
         
-        print("Hello smarfleet my name is Smlaa the captain of this fine vessle due to the loss of my favorite thing"
+        print("Hello smarfleet my name is Smlaa the captain of this fine vessel due to the loss of my favorite thing"
               "I have little to no patence for insolence.  I hear that you have gotten your hands on some information"
               "that should have been left alone.  I plan on killing you and your friends based on the information you read"
-              "you know I can as there is an entire fleet cloaked off your bow.\n"
+              "you know I can, as there is an entire fleet cloaked off your bow.\n"
             )
         
         if "biscut" not in state["inventory"]:
@@ -614,7 +614,7 @@ def disabled_ship_combat_scene(state):
             sel = get_input("  Which do you choose? (r/t): ", ["r", "t"])
             if sel == "r":
                 print("They are jamming warp travel")
-                print("There is no option, but to fight now")
+                print("There is no option but to fight now")
                 state["scene_step"] = "combat_middle"
                 save_game(state)
             else:
@@ -648,7 +648,7 @@ def disabled_ship_combat_scene(state):
         print("\n  [Save data cleared. Thanks for playing!]")      
     if state.get("scene_step") == "captured":
         print("\nThough, in the eyes of defeat, the Smenterprise and her crew had fought hard with unwavering resolve,\n"
-              "their efforts were not enough.  Surrounded and outmatched, they were ultimately captured-yet even in chains, their"
+              "their efforts were not enough.  Surrounded and outmatched, they were ultimately captured- yet even in chains, their"
               " defiance endured")
         log_event("ENDING", "captured", "SUCCESS")
         state["flags"]["ending"] = "captured"
