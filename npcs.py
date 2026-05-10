@@ -8,10 +8,6 @@ def talk_to_npc(state, npc_name, add_item, remove_item, get_input, log_event):
 
         state["flags"]["talked_to_smock"] = True
 
-        if "HintToken" not in state["inventory"]:
-            add_item(state, "HintToken")
-            log_event("NPC_REWARD", "NPC=Smock Item=HintToken", "SUCCESS")
-
     # NPC 2: Haru (Colony Ship Engineer)
     elif npc_name == "haru":
         print('Haru: "Our systems are breaking down faster than we can repair them."')
@@ -64,6 +60,9 @@ def talk_to_npc(state, npc_name, add_item, remove_item, get_input, log_event):
             print('Trader: "I already gave you what I had."')
         else:
             print('Trader: "Come back with a coin."')
+
+    elif npc_name == "smotty":
+        print('Smotty: "I\'m given her all she\'s got captain"')
 
     else:
         print("There is no one here by that name.")
