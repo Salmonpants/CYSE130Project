@@ -147,10 +147,12 @@ def corridor_scene(state: dict) -> None:
 
         if action == "map":
             print("\n  Map: There is The Neutral Zone to the bow")
+            corridor_scene(state)
             save_game(state)
 
         elif action == "inv":
             show_inventory(state)
+            corridor_scene(state)
             save_game(state)
 
         else:
