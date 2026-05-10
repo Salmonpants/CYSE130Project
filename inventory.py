@@ -25,9 +25,3 @@ def show_inventory(state: dict) -> None:
     inv = state["inventory"]
 
     print("  Inventory:", ", ".join(inv) if inv else "(empty)")
-    print("  Location :", state.get("location", "unknown"))
-
-    active = {k: v for k, v in state.get("flags", {}).items() if v}
-
-    if active:
-        print("  Status   :", ", ".join(f"{k}={v}" for k, v in active.items()))

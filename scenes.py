@@ -147,11 +147,16 @@ def corridor_scene(state: dict) -> None:
 
         if action == "map":
             print("\n  Map: There is The Neutral Zone to the bow")
+            state["scene_step"] = "corridor_junction"
             save_game(state)
+            corridor_scene(state)
 
         elif action == "inv":
             show_inventory(state)
+            state["scene_step"] = "corridor_junction"
             save_game(state)
+            corridor_scene(state)
+            
 
         else:
             state["location"] = "bridge"
