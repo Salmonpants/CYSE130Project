@@ -174,11 +174,10 @@ def colony_ship_scene(state: dict) -> None:
   with extremely low energy readings. It's been out here a long, long time.""")
 
     if state.get("scene_step") == "colony_communicate":
-        
-        action = get_input(
-            "\n  Attempt to communicate, teleport aboard, or scan the ship? (c/t/s): ",
-            ["c", "t","s"]
-        )
+        print("(c) Attempt to Communicate")
+        print("(t) Attempt to teleport aboard")
+        print("(s) Attempt to scan the ship")
+        action = get_input("\n  Which do you do? (c/t/s): ",["c", "t","s"])
 
         if action == "t":
             state["scene_step"] = "borded_colony"
