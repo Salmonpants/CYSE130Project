@@ -43,19 +43,85 @@ A Python terminal text‑adventure with branching storylines, NPC interactions, 
 
 ## Story paths and endings
 
-**Main story paths**
+### Main story paths
 
-1. **Colony Ship Path** — investigate the colony ship and attempt repairs.  
-2. **Disabled Ship Path** — board the disabled ship and attempt core stabilization.  
-3. **Bridge and Corridor Path** — explore the Smenterprise, collect items, and influence other paths.
+1. **Colony Ship Path**  
+   Investigate an ancient generational colony ship drifting through space.  
+   Choices involving diplomacy, schematics, repairs, and cooperation determine the outcome.
 
-**Example endings**
+2. **Disabled Ship Path**  
+   Board a disabled Klingon D7-class battlecruiser and attempt to stabilize its warp core.  
+   Includes terminal puzzles, exploration, combat, and moral decisions.
 
-- **ColonyRepair** — colony saved (victory).  
-- **biscut_trade** — peaceful resolution by trading the pet.  
-- **captured** — captured during combat (bad ending).  
+3. **Bridge and Corridor Path**  
+   Explore the USS Smenterprise, collect important items like the Apple and Coin, unlock access routes, and influence later story outcomes.
 
-> Update this list with the exact ending keys found in `scenes.py` before final submission.
+---
+
+## All Story Endings
+
+### Neutral / Early Ending
+
+- **Ignored calls for help**  
+  The player ignores both distress calls and returns home, only to face consequences from Smarfleet for abandoning those in need.
+
+---
+
+### Colony Ship Endings
+
+- **ColonyRepair** — *Best Ending*  
+  The colony ship is fully repaired and restored to factory condition.
+
+- **Lost_Supplies**  
+  The replicated repair parts are lost, but the colony ship is repaired enough to survive.
+
+- **ColonyRepairPartial**  
+  The replicator fails to create a critical part, forcing partial repairs.
+
+- **ColonyRepairGroup** — *Group Success Ending*  
+  The colonists fully understand their situation and work together with your crew to completely restore the ship.
+
+- **ColonyRepairGroupSuppliesLost**  
+  The colony ship survives thanks to teamwork, despite losing vital supplies.
+
+- **ColonyPartialGroup**  
+  The replicator fails, but the combined efforts of both crews repair the ship enough to continue its journey.
+
+---
+
+### Disabled Ship Endings
+
+- **unable to help**  
+  Failure to stabilize the warp core results in massive casualties and retreat.
+
+- **biscut_trade** — *Peaceful Ending*  
+  Returning Biscut the targ to Captain Smlaa peacefully resolves the conflict.
+
+---
+
+### Combat Endings
+
+- **an_apple_a_day** — *Secret / Joke Victory Ending*  
+  Using the Apple causes a systems reboot that disables enemy shields, allowing the Smenterprise to defeat overwhelming odds.
+
+- **hard_won**  
+  The Smenterprise survives an ambush and wins a desperate battle against multiple Birds-of-Prey.
+
+- **captured** — *Bad Ending*  
+  The crew fights bravely but is ultimately overwhelmed and captured.
+
+---
+
+## Choice and Item Impact
+
+Several inventory items directly influence endings and gameplay outcomes:
+
+- **Apple** — unlocks a hidden combat victory route.
+- **Coin** — improves odds during critical random events.
+- **Ship_Schematic** — enables better colony ship repair outcomes.
+- **biscut** — unlocks the peaceful resolution ending.
+- **AccessCode** — assists with terminal puzzles aboard the disabled ship.
+```
 
 ## Locations and major events
 
