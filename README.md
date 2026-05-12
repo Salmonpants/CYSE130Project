@@ -21,12 +21,6 @@ A Python terminal text‑adventure with branching storylines, NPC interactions, 
 - **Python 3.9+** (3.10 recommended)  
 - No external packages required (standard library only)
 
-**Run locally**
-
-```bash
-python main.py
-```
-
 **Files of interest**
 
 - `main.py` — game launcher and main menu  
