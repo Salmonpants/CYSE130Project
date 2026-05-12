@@ -29,7 +29,7 @@ from scenes import (
     disabled_ship_combat_scene
 )
 
-# seeing if there is a saved game, and if not, the starts a new game
+# seeing if there is a saved game, and if not, starts a new game
 def _check_game_started(state: dict, option_name: str) -> bool:
     if state["location"] == "start":
         print(f"  [Start a new game first before using '{option_name}'.]")
