@@ -6,7 +6,7 @@ from inventory import add_item, remove_item, show_inventory
 from save_system import save_game, delete_save
 from logger import log_event
 from npcs import talk_to_npc
-from minigames import terminal_puzzle, corridor_encounter
+from minigames import terminal_puzzle, corridor_encounter, corridor_access_puzzle
 from state import reset_state
 
 
@@ -93,6 +93,14 @@ def start_bridge(state: dict) -> None:
             disabled_ship_arrival_scene(state)
     
     else:
+        if not state["flags"].get("corridor_access_granted"):
+            if not corridor_access_puzzle(state):
+                print("  Access denied. You remain on the bridge.")
+                state["location"] = "bridge"
+                state["scene_step"] = "bridge_choice"
+                save_game(state)
+                return
+
         print("  You leave the bridge and head down the main corridor.")
 
         state["location"] = "corridor"

@@ -1,9 +1,50 @@
 import random
 
 from errors import safe_action, InputError
-from input_helpers import get_input
+from input_helpers import get_input, prompt_menu_number
 from inventory import remove_item
 from logger import log_event
+
+
+@safe_action
+def corridor_access_puzzle(state: dict) -> bool:
+    """
+    Guess a number from 1 to 10 in 3 attempts.
+    Returns True on success, False when the access panel resets.
+    """
+    secret = random.randint(1, 10)
+    attempts = 3
+
+    print("\n  The corridor access panel lights up.")
+    print("  Guess the access number from 1 to 10. You have 3 guesses.")
+    log_event("CHALLENGE_ATTEMPT", "Puzzle=CorridorAccess START")
+
+    for attempt in range(1, attempts + 1):
+        guess = prompt_menu_number(
+            f"  Guess {attempt}/{attempts} (1-10): ",
+            1,
+            10
+        )
+
+        if guess == secret:
+            print("  Correct. The corridor doors slide open.")
+            log_event("CHALLENGE_ATTEMPT", "Puzzle=CorridorAccess", "SUCCESS")
+            state["flags"]["corridor_access_granted"] = True
+            return True
+
+        if guess < secret:
+            print("  Too low.")
+        else:
+            print("  Too high.")
+
+        log_event(
+            "CHALLENGE_ATTEMPT",
+            f"Puzzle=CorridorAccess FAIL attempt={attempt}"
+        )
+
+    print("  Three wrong guesses. The panel resets with a new number.")
+    log_event("CHALLENGE_ATTEMPT", "Puzzle=CorridorAccess RESET")
+    return False
 
 
 @safe_action
