@@ -253,7 +253,7 @@ def colony_ship_scene(state: dict) -> None:
     if state.get("scene_step") == "colony_ship_solo":
         
         print("Arriving back after your exploration you find that your replicatior is on the fritz"
-              "and intermitantly making things and you attempt to make parts for the colony ship")
+              "and intermitantly making things and you attempt to make parts for the colony ship.")
          
         if "Coin" in state["inventory"]:
             val = random.randint(1,10)
@@ -420,15 +420,15 @@ def disabled_ship_arrival_scene(state):
     state["location"] = "outside_ship"
     print(
             "\n  You drop out of warp and infront of you is the disabled ship. "
-            "The ship is a D7-class battlecruiser in the middle of nowhere"
-            "The sensors show there is 223 crewmembers left on board and the core is about to breach"
+            "The ship is a D7-class battlecruiser in the middle of nowhere. "
+            "The sensors show there is 223 crewmembers left on board and the core is about to breach."
         )
     print("  (d) Drop shields and attempt to teleport the survivors off of the ship")
     print("  (t) Teleport aboard and try to stabalize the ship")
     sel = get_input("  Which do you approach? (d/t): ", ["d", "t"])
     if(sel == "d"):
         state["scene_step"] = "combat_start"
-        print("\nHaving to drop your shields in order to teleport the crew off of their ship left you venerable to attack")
+        print("\nHaving to drop your shields in order to teleport the crew off of their ship left you vulnerable to attack.")
         print("You now find out that this was no ship in distress, but a trap.")
         disabled_ship_combat_scene(state)
     else:
@@ -517,9 +517,9 @@ def disabled_ship_scene(state: dict) -> None:
     if state.get("scene_step") == "core_stabilization":
         save_game(state)
         print(
-                "\nYou finally get to the core room everything is red alarms are blaring there is steam everywhere."
-                "Your engineer thinks it can be a quick fix, but it seems the console is locked"
-                "It apears to be the same type of lock at the other door"
+                "\nYou finally get to the core room everything is red alarms are blaring there is steam everywhere. "
+                "Your engineer thinks it can be a quick fix, but it seems the console is locked. "
+                "It apears to be the same type of lock at the other door."
             )
         success = False
         success = terminal_puzzle(state)
@@ -547,10 +547,10 @@ def disabled_ship_scene(state: dict) -> None:
              
     if state.get("scene_step") == "taken_to_captain":
         
-        print("Hello smarfleet my name is Smlaa the captain of this fine vessle due to the loss of my favorite thing"
-              "I have little to no patence for insolence.  I hear that you have gotten your hands on some information"
-              "that should have been left alone.  I plan on killing you and your friends based on the information you read"
-              "you know I can as there is an entire fleet cloaked off your bow.\n"
+        print("Hello smarfleet my name is Smlaa, the captain of this fine vessle. Due to the loss of my favorite thing "
+              "I have little to no patence for insolence.  I hear that you have gotten your hands on some information "
+              "that should have been left alone.  I plan on killing you and your friends based on the information you read."
+              "You know I can as there is an entire fleet cloaked off your bow.\n"
             )
         
         if "biscut" not in state["inventory"]:
@@ -569,14 +569,14 @@ def disabled_ship_scene(state: dict) -> None:
                 state["scene_step"] = "combat_start"
                 state["location"] = "smenterprise_bridge"
                 save_game(state)
-                print("Having gotten out of there right before getting skinned alive")
+                print("You got out of there right before getting skinned alive.")
                 disabled_ship_combat_scene(state)
             else:
                 print(
-                    "After you gave Smlaa biscut you realize that is what he was so distraught about losing"
-                    "Smlaa says these ships are so large there are so many places for a targ to hide"
-                    "He is just so full of joy that he lets you and your crew go unscathed with a heartfelt appology"
-                    "You and your crew head back to starbase 10 happy to be alive")
+                    "After you gave Smlaa biscut you realize that is what he was so distraught about losing. "
+                    "Smlaa says these ships are so large there are so many places for a targ to hide. "
+                    "He is just so full of joy that he lets you and your crew go unscathed with a heartfelt appology. "
+                    "You and your crew head back to starbase 10 happy to be alive.")
                 log_event("ENDING", "biscut_trade", "SUCCESS")
                 state["flags"]["ending"] = "biscut_trade"
                 delete_save()
