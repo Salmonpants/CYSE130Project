@@ -36,8 +36,7 @@ def talk_to_npc(state, npc_name, add_item, remove_item, get_input, log_event):
 
     # NPC 4: Guard
     elif npc_name == "guard":
-        print('Guard: "No one passes through here without proof they belong."')
-        print('Guard: "If you help restore order, I may let you through."')
+        print("Guard: This is my pet now. Don't tell the captain I have him.")
 
         state["flags"]["talked_to_guard"] = True
 
@@ -49,14 +48,14 @@ def talk_to_npc(state, npc_name, add_item, remove_item, get_input, log_event):
         state["flags"]["talked_to_trader"] = True
 
         if "Coin" in state["inventory"] and "MedPatch" not in state["inventory"]:
-            trade = get_input("Trade your Coin for a MedPatch? (y/n): ", ["y", "n"])
+            trade = get_input("Trade your Coin for a weapon? (y/n): ", ["y", "n"])
             if trade == "y":
                 remove_item(state, "Coin")
-                add_item(state, "MedPatch")
-                log_event("NPC_TRADE", "NPC=Trader Coin->MedPatch", "SUCCESS")
+                add_item(state, "weapon")
+                log_event("NPC_TRADE", "NPC=Trader Coin->weapon", "SUCCESS")
             else:
                 print('Trader: "Suit yourself."')
-        elif "MedPatch" in state["inventory"]:
+        elif "weapon" in state["inventory"]:
             print('Trader: "I already gave you what I had."')
         else:
             print('Trader: "Come back with a coin."')
