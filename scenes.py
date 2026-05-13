@@ -19,7 +19,6 @@ def print_intro(state: dict) -> None:
   light stretched thin across the cold expanse of the Neutral Zone. For nearly
   a century, the Federation and the Klingon Star Empire have maintained an uneasy
   stillness here — neither war, nor peace — only distance.
-
   Until now.
 
   A distortion tears through subspace like a wound reopening. Sensors aboard the
@@ -491,6 +490,7 @@ def disabled_ship_scene(state: dict) -> None:
         if state.get("scene_step") == "puppy_room":
             state["scene_step"] = "puppy_room"
             save_game(state)
+            talk_to_npc(state, "guard", add_item, remove_item, get_input, log_event)
 
             print(
             "\nYou open the door and find yourself looking at a most peculure creature."
@@ -600,6 +600,7 @@ def disabled_ship_combat_scene(state):
             sel = get_input("  Which do you choose? (r/t/a): ", ["r", "t","a"])
             if sel == "r":
                 print("They are jamming warp travel")
+                talk_to_npc(state, "trader", add_item, remove_item, get_input, log_event)
                 state["scene_step"] = "combat_middle"
                 save_game(state)
             elif sel == "t":
@@ -609,7 +610,6 @@ def disabled_ship_combat_scene(state):
                 print("using the apple made the Smenterprises bridge sutdown and reeboot\n"
                       "The tactical officer informs you that all of the enemy shields are down\n"
                       "One photon each should do lets not waste ammunition")
-                talk_to_npc(state, "Smones", add_item, remove_item, get_input, log_event)
                 print("\nHaving foiled the smlingons attempt at an ambush against insurmountable odds\n"
                       "you end the day victorious as you repair and set a course for starbase 10")
                 log_event("ENDING", "an_apple_a_day", "SUCCESS")
@@ -624,6 +624,7 @@ def disabled_ship_combat_scene(state):
             if sel == "r":
                 print("They are jamming warp travel")
                 print("There is no option, but to fight now")
+                talk_to_npc(state, "trader", add_item, remove_item, get_input, log_event)
                 state["scene_step"] = "combat_middle"
                 save_game(state)
             else:
@@ -632,7 +633,9 @@ def disabled_ship_combat_scene(state):
                     
     if state.get("scene_step") == "combat_middle":  
         survival = random.randint(1,10)
-        if "Coin" in state["inventory"]:
+        if "weapon" in state["inventory"]:
+            state["scene_step"] = "victory"
+        elif "Coin" in state["inventory"]:
             if(survival > 4):
                 state["scene_step"] = "victory"
             else:
