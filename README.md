@@ -8,7 +8,7 @@
   # Jad Labriny 
   # Hudson Neely 
   
-# Repository:  [_ GitHub repo link here_](https://github.com/Salmonpants/CYSE130Project)
+# Repository: https://github.com/Salmonpants/CYSE130Project
 
 ## Overview
 
