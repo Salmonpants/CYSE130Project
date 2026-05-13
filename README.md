@@ -56,6 +56,9 @@ A Python terminal text‑adventure with branching storylines, NPC interactions, 
 3. **Bridge and Corridor Path**  
    Explore the USS Smenterprise, collect important items like the Apple and Coin, unlock access routes, and influence later story outcomes.
 
+4. **Ignore path**
+   Ignore the distressed ships.
+
 ---
 
 ## All Story Endings
@@ -117,10 +120,11 @@ A Python terminal text‑adventure with branching storylines, NPC interactions, 
 Several inventory items directly influence endings and gameplay outcomes:
 
 - **Apple** — unlocks a hidden combat victory route.
-- **Coin** — improves odds during critical random events.
+- **Coin** — improves odds during critical random events and can be spent.
 - **Ship_Schematic** — enables better colony ship repair outcomes.
 - **biscut** — unlocks the peaceful resolution ending.
 - **AccessCode** — assists with terminal puzzles aboard the disabled ship.
+- **Weapon** — ensures victory when fighting.
 ```
 
 ## Locations and major events
@@ -136,18 +140,17 @@ Several inventory items directly influence endings and gameplay outcomes:
 - **Smock (Bridge)** — gives a hint and sets helpful flags.  
 - **Haru (Colony Ship)** — provides clues about schematics.  
 - **Mira (Disabled Ship)** — trades **Coin** for **AccessCode** fragment.  
-- **Guard** — gives a hint about biscut.  
-- **Trader** — trades **Coin** for **MedPatch**.
-
-Include in README where each NPC appears and what they do (clue, trade, item, or trigger).
+- **Guard(Biscut's room)** — gives a hint about biscut.  
+- **Trader(Combat)** — trades **Coin** for **weapon**.
 
 ## Inventory items
 
 - **Apple** — distraction or special outcome trigger.  
-- **Coin** — used for trades (AccessCode, MedPatch).  
+- **Coin** — used for trades (AccessCode, weapon).  
 - **AccessCode** — lowers difficulty of terminal puzzles.  
 - **Ship_Schematic** — used to repair the colony ship.  
 - **Ship_Components** — influences colony repair ending.
+- **weapon** — strengthens combat.
 
 ## Challenges
 
