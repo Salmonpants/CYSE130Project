@@ -152,7 +152,7 @@ Include in README where each NPC appears and what they do (clue, trade, item, or
 ## Challenges
 
 - **Terminal puzzle** — occurs on the disabled ship terminal; success disables alarms, failure may trigger a sweep or other consequences.  
-- **Drone encounter** — corridor combat; success lets you pass, failure injures you or forces retreat.
+- **Locked corridor** — guess the number to open the door; success lets you pass, failure causes the number to change.
 
 ## Cyber Pack
 
