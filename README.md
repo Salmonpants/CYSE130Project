@@ -38,7 +38,7 @@ A Python terminal text‑adventure with branching storylines, NPC interactions, 
 - **5+ locations** and major events (bridge, corridor, colony ship, disabled ship, combat)  
 - **5+ NPCs** with dialogue, trades, and rewards  
 - **Inventory system** (collect, view, use items)  
-- **2+ challenges** (terminal puzzle, drone encounter/combat)  
+- **2+ challenges** (terminal puzzle, guess the number)  
 - **Cyber Pack**: input validation, audit logging, save/load tamper detection
 
 ## Story paths and endings
@@ -51,7 +51,7 @@ A Python terminal text‑adventure with branching storylines, NPC interactions, 
 
 2. **Disabled Ship Path**  
    Board a disabled Klingon D7-class battlecruiser and attempt to stabilize its warp core.  
-   Includes terminal puzzles, exploration, combat, and moral decisions.
+   Includes terminal puzzles, exploration, combat, and decisions.
 
 3. **Bridge and Corridor Path**  
    Explore the USS Smenterprise, collect important items like the Apple and Coin, unlock access routes, and influence later story outcomes.
