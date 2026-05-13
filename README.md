@@ -133,10 +133,10 @@ Several inventory items directly influence endings and gameplay outcomes:
 
 ## NPCs
 
-- **Smock (Bridge)** — gives **HintToken** and sets helpful flags.  
+- **Smock (Bridge)** — gives a hint and sets helpful flags.  
 - **Haru (Colony Ship)** — provides clues about schematics.  
 - **Mira (Disabled Ship)** — trades **Coin** for **AccessCode** fragment.  
-- **Guard** — blocks passage; dialogue affects access.  
+- **Guard** — gives a hint about biscut.  
 - **Trader** — trades **Coin** for **MedPatch**.
 
 Include in README where each NPC appears and what they do (clue, trade, item, or trigger).
